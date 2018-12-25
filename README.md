@@ -10,8 +10,7 @@ Trying to write tetris in javascript for kicks
 
 -- Pieces come down from the top middle, starting at speed S
 
-
-VOCAB:
+## Vocab:
 
 WIDTH == Game width, 10
 HEIGHT == Game height, 20
@@ -25,6 +24,7 @@ Piece = {
     Landed :: Boolean //TODO do we need this?
 }
 
+
 Coordinate = {
     X int in [1..WIDTH]
     Y int in [1..HEIGHT]
@@ -37,15 +37,7 @@ Tile = {
     DownRight :: Coordinate
 }
 
-PieceType = [
-    Log,
-    T,
-    ZigLeft,
-    ZigRight,
-    L,
-    LRev,
-    Cube
-]
+## PieceTypes:
 
 Log:
 + + + +
