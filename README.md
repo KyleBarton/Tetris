@@ -11,6 +11,9 @@ Trying to write tetris in javascript for kicks
 -- Pieces come down from the top middle, starting at speed S
 
 -- Scratch treating tiles with length 1; instead, give tiles area 0, a.k.a coordinate == tile
+
+-- Get the game up & running with just cubes MOST SATISFYING GAME EVER
+
 ## Vocab:
 
 WIDTH == Game width, 10
