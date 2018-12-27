@@ -1,7 +1,6 @@
 class Piece {
-    constructor(pType, locus){
-
-
+    constructor(pType){
+        //Decide initial covered tiles based on pType
     }
 }
 

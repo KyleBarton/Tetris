@@ -10,6 +10,7 @@ Trying to write tetris in javascript for kicks
 
 -- Pieces come down from the top middle, starting at speed S
 
+-- Scratch treating tiles with length 1; instead, give tiles area 0, a.k.a coordinate == tile
 ## Vocab:
 
 WIDTH == Game width, 10
@@ -20,7 +21,7 @@ LS == Speed at which the pieces are moving (when game starts at level 1, pieces 
 Piece = {
     Type :: PieceType,
     Locus :: Coordinate,
-    CoveredTiles :: Array<Tile>
+    CoveredTiles :: Array<Coordinate>
     Landed :: Boolean //TODO do we need this?
 }
 
@@ -28,13 +29,6 @@ Piece = {
 Coordinate = {
     X int in [1..WIDTH]
     Y int in [1..HEIGHT]
-}
-
-Tile = {
-    UpLeft :: Coordinate,
-    UpRight :: Coordinate,
-    DownLeft :: Coordinate
-    DownRight :: Coordinate
 }
 
 ## PieceTypes:
