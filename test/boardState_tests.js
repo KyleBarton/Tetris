@@ -1,4 +1,3 @@
-let assert = require('assert');
 let should = require('should');
 let d = require('../app/model/dimension');
 let GameFactory = require('../app/model/gameFactory');
