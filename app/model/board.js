@@ -19,6 +19,13 @@ class Board {
         }
         return coords;
     }
+    introducePiece(piece){
+        this.activePiece = piece;
+        for(let i = 0; i < this.activePiece.coveredCoords.length; i++){
+            // console.log(`yo, ${coord}`);
+            this.coveredCoords.push(this.activePiece.coveredCoords[i]);;
+        }
+    }
 }
 
 module.exports=Board;
