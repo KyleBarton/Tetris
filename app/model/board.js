@@ -1,5 +1,6 @@
 let d = require('./dimension');
 let Coordinate = require('./coordinate');
+let Moves = require('./moves');
 
 class Board {
     constructor(){}
@@ -24,6 +25,15 @@ class Board {
         for(let i = 0; i < this.activePiece.coveredCoords.length; i++){
             // console.log(`yo, ${coord}`);
             this.coveredCoords.push(this.activePiece.coveredCoords[i]);;
+        }
+    }
+    processForActivePiece(move){
+        if (move === Moves.Right){
+            this.activePiece.coveredCoords = this.activePiece.coveredCoords.map(function(cc){
+                cc.X++
+                return cc;
+            })
+
         }
     }
 }
