@@ -4,6 +4,7 @@ let GameFactory = require('../app/model/gameFactory');
 let Piece = require('../app/model/piece');
 let pTypes = require('../app/model/pieceType');
 let Moves = require('../app/model/moves');
+let Coordinate = require('../app/model/coordinate.js')
 
 
 describe('The Board', function(){
@@ -58,25 +59,27 @@ describe('The Board', function(){
             this.board.introducePiece(this.newPiece);
         });
         describe('right', function(){
-            beforeEach(function(){
-                console.log(this.board.activePiece);
-                console.log(this.board.coveredCoords);
-                this.board.processForActivePiece(Moves.Right);
-            })
+			beforeEach(function(){})
             it('should move all coords right if legal', function(){
-                //New position, so a right move is legal
+                this.board.processForActivePiece(Moves.Right);
                 let originalPiece = new Piece(pTypes.Cube).newPosition();
                 this.board.activePiece.coveredCoords.should.eql(originalPiece.coveredCoords.map(function(cc){
                     cc.X++;
                     return cc
                 }));
-                console.log(this.board.activePiece);
-                console.log(this.board.coveredCoords);
-                this.board.coveredCoords.should.eql(this.board.activePiece.coveredCoords);
             });
             it('should keep piece in the same place if on right wall', function(){
-				let originalPiece = new Piece(pTypes.Cube).newPosition();
+				for (let i = 0; i < 5; i++){
+					this.board.processForActivePiece(Moves.Right);
+				}
 
+				//Need an elegant way to assert that our coords aren't out of bounds
+				this.board.activePiece.coveredCoords.should.eql([
+					new Coordinate(d.WIDTH-2,d.HEIGHT-1),
+					new Coordinate(d.WIDTH-2,d.HEIGHT-2),
+					new Coordinate(d.WIDTH-1,d.HEIGHT-1),
+					new Coordinate(d.WIDTH-1,d.HEIGHT-2)
+				]) 
             });
             it('should keep piece in the same place if coords to the right top are covered', function(){
 
@@ -84,6 +87,8 @@ describe('The Board', function(){
             it('should keep piece in the same place if coords to the right bottom are covered', function(){
 
             });
+			it('should not include the coords where the piece moved off in coveredcoords', function(){});
+			it('should include the coords where the piece moved to in coveredcoords', function(){});
         })
     })
 

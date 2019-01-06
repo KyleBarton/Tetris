@@ -1,5 +1,6 @@
 let pTypes = require('./pieceType');
 let Coordinate = require('./coordinate');
+let Moves = require('./moves');
 
 class Piece {
     constructor(pType){
@@ -20,6 +21,14 @@ class Piece {
         }
         return this;
     }
+	move(move){
+		if (move === Moves.Right){
+			this.coveredCoords = this.coveredCoords.map(function(cc){
+				cc.X++;
+				return cc;
+			});
+		}
+	}
 
 }
 
