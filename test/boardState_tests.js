@@ -82,14 +82,23 @@ describe('The Board', function(){
 				]) 
             });
             it('should keep piece in the same place if coords to the right top are covered', function(){
+				// 0 1 2 3 4 5 6 7 8 9
+				let startingPiece = new Piece(pTypes.Cube).newPosition();
+				this.board.addCoveredCoords([new Coordinate(6, d.HEIGHT-1)]);
 
+				this.board.processForActivePiece(Moves.Right);
+
+				//this.board.activePiece.coveredCoords.should.eql(startingPiece.coveredCoords);
             });
             it('should keep piece in the same place if coords to the right bottom are covered', function(){
 
             });
 			it('should not include the coords where the piece moved off in coveredcoords', function(){});
 			it('should include the coords where the piece moved to in coveredcoords', function(){});
-        })
+        });
+		describe('left', function(){
+		})
+	
     })
 
 });

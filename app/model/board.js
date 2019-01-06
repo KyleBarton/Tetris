@@ -49,6 +49,18 @@ class Board {
 			});
 		}
 	}
+	//TODO this is probably too powerful and needs to be private
+	addCoveredCoords(coords){
+		//TODO this really needs to be abstracted somehow
+		for (let i = 0; i < coords.length; i++){
+			if (!this.coveredCoords.some(function(cc){
+				return cc.X === coords[i].X && cc.Y === coords[i].Y;
+			})){
+				this.coveredCoords.push(coords[i]);
+			}
+
+		}
+	}
 }
 
 module.exports=Board;
