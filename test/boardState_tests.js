@@ -75,6 +75,7 @@ describe('The Board', function(){
                 this.board.coveredCoords.should.eql(this.board.activePiece.coveredCoords);
             });
             it('should keep piece in the same place if on right wall', function(){
+				let originalPiece = new Piece(pTypes.Cube).newPosition();
 
             });
             it('should keep piece in the same place if coords to the right top are covered', function(){
