@@ -1,3 +1,5 @@
+# Vim statefiles
+*.swp
 # Logs
 logs
 *.log
