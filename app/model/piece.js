@@ -21,6 +21,23 @@ class Piece {
         }
         return this;
     }
+	hasNeighbor(move, coord){
+		if (this.pType === pTypes.Cube){
+			if (move === Moves.Right){
+				let sorted = this.coveredCoords.sort(function(a, b){
+					return b.X - a.X;
+				});
+				//ew. Ew ew ew
+				let rightMostCoords = [sorted[0], sorted[1]];
+				let rightNeighbors = rightMostCoords.map(function(cc){
+						return new Coordinate(cc.X+1, cc.Y);
+				});
+				return rightNeighbors.some(function(cc){
+					return cc.X === coord.X && cc.Y == coord.Y;
+				})
+			}
+		}
+	}
 	move(move){
 		if (move === Moves.Right){
 			this.coveredCoords = this.coveredCoords.map(function(cc){

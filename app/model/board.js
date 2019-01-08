@@ -30,7 +30,13 @@ class Board {
     }
 
     processForActivePiece(move){
-        if (move === Moves.Right && !this.activePieceOnEdge(Moves.Right)){
+        if (move === Moves.Right 
+			&& 
+			!this.activePieceOnEdge(Moves.Right)
+			&&
+			this.coordsAreClear(Moves.Right)
+			)
+		{
 			let oldCoords = this.activePiece.coveredCoords;
 			this.coveredCoords = this.coveredCoords.filter(function(cc){
 				oldCoords.some(function(pcc){
@@ -41,6 +47,15 @@ class Board {
 			this.introducePiece(this.activePiece);
         }
     }
+
+	coordsAreClear(move){
+		if (move === Moves.Right){
+			let piece = this.activePiece;
+			return !this.coveredCoords.some(function(cc){
+				return piece.hasNeighbor(move, cc);
+			})
+		}
+	}
 
 	activePieceOnEdge(move){
 		if (move === Moves.Right){

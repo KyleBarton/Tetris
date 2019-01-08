@@ -6,6 +6,11 @@ let pTypes = require('../app/model/pieceType');
 let Moves = require('../app/model/moves');
 let Coordinate = require('../app/model/coordinate.js')
 
+const arbitraryCoordSort = (a,b) => { 
+	//factor of 2 breaks the tie and prefers x comparison over y
+	return (2*b.X + b.Y) - (2*a.X + a.Y);
+}
+
 
 describe('The Board', function(){
     describe('at starting position', function(){
@@ -63,10 +68,10 @@ describe('The Board', function(){
             it('should move all coords right if legal', function(){
                 this.board.processForActivePiece(Moves.Right);
                 let originalPiece = new Piece(pTypes.Cube).newPosition();
-                this.board.activePiece.coveredCoords.should.eql(originalPiece.coveredCoords.map(function(cc){
+                this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(originalPiece.coveredCoords.map(function(cc){
                     cc.X++;
                     return cc
-                }));
+                }).sort(arbitraryCoordSort));
             });
             it('should keep piece in the same place if on right wall', function(){
 				for (let i = 0; i < 5; i++){
@@ -79,7 +84,7 @@ describe('The Board', function(){
 					new Coordinate(d.WIDTH-2,d.HEIGHT-2),
 					new Coordinate(d.WIDTH-1,d.HEIGHT-1),
 					new Coordinate(d.WIDTH-1,d.HEIGHT-2)
-				]) 
+				].sort(arbitraryCoordSort)) 
             });
             it('should keep piece in the same place if coords to the right top are covered', function(){
 				// 0 1 2 3 4 5 6 7 8 9
@@ -88,7 +93,7 @@ describe('The Board', function(){
 
 				this.board.processForActivePiece(Moves.Right);
 
-				//this.board.activePiece.coveredCoords.should.eql(startingPiece.coveredCoords);
+				this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
             });
             it('should keep piece in the same place if coords to the right bottom are covered', function(){
 
