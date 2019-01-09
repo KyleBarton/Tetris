@@ -104,8 +104,20 @@ describe('The Board', function(){
 				this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
 
             });
-			it('should not include the coords where the piece moved off in coveredcoords', function(){});
-			it('should include the coords where the piece moved to in coveredcoords', function(){});
+			it('should not include the coords where the piece moved off in coveredcoords', function(){
+				this.board.processForActivePiece(Moves.Right);
+
+				this.board.coveredCoords.should.not.matchAny(function(cc){
+					cc.X.should.be.eql(4);
+				})
+			});
+			it('should include the coords where the piece moved to in coveredcoords', function(){
+				let startingPiece = new Piece(pTypes.Cube).newPosition();
+				this.board.processForActivePiece(Moves.Right);
+				this.board.coveredCoords.sort(arbitraryCoordSort).should.be.eql(startingPiece.coveredCoords.map(function(cc){
+					return new Coordinate(cc.X+1, cc.Y);
+				}).sort(arbitraryCoordSort));
+			});
         });
 		describe('left', function(){
 		})
