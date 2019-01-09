@@ -120,8 +120,8 @@ describe('The Board', function(){
 			});
         });
 		describe('left', function(){
-		})
+		});
 	
-    })
+    });
 
 });
