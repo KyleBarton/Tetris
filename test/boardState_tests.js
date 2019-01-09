@@ -96,6 +96,12 @@ describe('The Board', function(){
 				this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
             });
             it('should keep piece in the same place if coords to the right bottom are covered', function(){
+				let startingPiece = new Piece(pTypes.Cube).newPosition();
+				this.board.addCoveredCoords([new Coordinate(6, d.HEIGHT-2)]);
+
+				this.board.processForActivePiece(Moves.Right);
+
+				this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
 
             });
 			it('should not include the coords where the piece moved off in coveredcoords', function(){});
