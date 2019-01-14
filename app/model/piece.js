@@ -34,16 +34,36 @@ class Piece {
 				});
 				return rightNeighbors.some(function(cc){
 					return cc.X === coord.X && cc.Y == coord.Y;
-				})
+				});
+			}
+			if (move === Moves.Left){
+				let sorted = this.coveredCoords.sort(function(a,b){
+					return a.X - b.X;
+				});
+				let leftMostCoords = [sorted[0], sorted[1]];
+				let leftNeighbors = leftMostCoords.map(function(cc){
+					return new Coordinate(cc.X-1,cc.Y);
+				});
+				return leftNeighbors.some(function(cc){
+					return cc.X === coord.X && cc.Y === coord.Y;
+				});
 			}
 		}
 	}
+
 	move(move){
 		if (move === Moves.Right){
 			this.coveredCoords = this.coveredCoords.map(function(cc){
 				cc.X++;
 				return cc;
 			});
+		}
+		if (move === Moves.Left){
+			this.coveredCoords = this.coveredCoords.map(function(cc){
+				cc.X--;
+				return cc;
+
+			})
 		}
 	}
 

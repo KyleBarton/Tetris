@@ -64,7 +64,6 @@ describe('The Board', function(){
             this.board.introducePiece(this.newPiece);
         });
         describe('right', function(){
-			beforeEach(function(){})
             it('should move all coords right if legal', function(){
                 this.board.processForActivePiece(Moves.Right);
                 let originalPiece = new Piece(pTypes.Cube).newPosition();
@@ -120,6 +119,60 @@ describe('The Board', function(){
 			});
         });
 		describe('left', function(){
+			//TODO do this stuff you know
+            it('should move all coords left if legal', function(){
+                this.board.processForActivePiece(Moves.Left);
+                let originalPiece = new Piece(pTypes.Cube).newPosition();
+                this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(originalPiece.coveredCoords.map(function(cc){
+                    cc.X--;
+                    return cc
+                }).sort(arbitraryCoordSort));
+            });
+            //it('should keep piece in the same place if on right wall', function(){
+			//	for (let i = 0; i < 5; i++){
+			//		this.board.processForActivePiece(Moves.Right);
+			//	}
+
+			//	//Need an elegant way to assert that our coords aren't out of bounds
+			//	this.board.activePiece.coveredCoords.should.eql([
+			//		new Coordinate(d.WIDTH-2,d.HEIGHT-1),
+			//		new Coordinate(d.WIDTH-2,d.HEIGHT-2),
+			//		new Coordinate(d.WIDTH-1,d.HEIGHT-1),
+			//		new Coordinate(d.WIDTH-1,d.HEIGHT-2)
+			//	].sort(arbitraryCoordSort)) 
+            //});
+            //it('should keep piece in the same place if coords to the right top are covered', function(){
+			//	// 0 1 2 3 4 5 6 7 8 9
+			//	let startingPiece = new Piece(pTypes.Cube).newPosition();
+			//	this.board.addCoveredCoords([new Coordinate(6, d.HEIGHT-1)]);
+
+			//	this.board.processForActivePiece(Moves.Right);
+
+			//	this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
+            //});
+            //it('should keep piece in the same place if coords to the right bottom are covered', function(){
+			//	let startingPiece = new Piece(pTypes.Cube).newPosition();
+			//	this.board.addCoveredCoords([new Coordinate(6, d.HEIGHT-2)]);
+
+			//	this.board.processForActivePiece(Moves.Right);
+
+			//	this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
+
+            //});
+			//it('should not include the coords where the piece moved off in coveredcoords', function(){
+			//	this.board.processForActivePiece(Moves.Right);
+
+			//	this.board.coveredCoords.should.not.matchAny(function(cc){
+			//		cc.X.should.be.eql(4);
+			//	})
+			//});
+			//it('should include the coords where the piece moved to in coveredcoords', function(){
+			//	let startingPiece = new Piece(pTypes.Cube).newPosition();
+			//	this.board.processForActivePiece(Moves.Right);
+			//	this.board.coveredCoords.sort(arbitraryCoordSort).should.be.eql(startingPiece.coveredCoords.map(function(cc){
+			//		return new Coordinate(cc.X+1, cc.Y);
+			//	}).sort(arbitraryCoordSort));
+			//});
 		});
 	
     });
