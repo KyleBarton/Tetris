@@ -64,7 +64,9 @@ class Board {
 			this.introducePiece(this.activePiece);
 		}
     }
-
+	activePieceCoords(){
+		return this.activePiece.coveredCoords;
+	}
 	coordsAreClear(move){
 		let piece = this.activePiece;
 		return !this.coveredCoords.some(function(cc){
