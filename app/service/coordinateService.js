@@ -1,4 +1,4 @@
-let d = require('./dimension.js')
+let d = require('../model/dimension.js')
 
 let coordinateService = {
 	newCoordinate: function(x,y){

@@ -1,6 +1,7 @@
 let pTypes = require('../model/pieceType');
-let Coordinate = require('../model/coordinate');
 let Moves = require('../model/moves');
+
+let coordinateService = require('./coordinateService.js');
 
 let PieceService = {
 	newPiece: function(pType){
@@ -8,10 +9,10 @@ let PieceService = {
 			let newPiece = {
 				pType: pType,
 				coveredCoords: [
-					new Coordinate(4, 19),
-					new Coordinate(4, 18),
-					new Coordinate(5, 19),
-					new Coordinate(5, 18)
+					coordinateService.newCoordinate(4, 19),
+					coordinateService.newCoordinate(4, 18),
+					coordinateService.newCoordinate(5, 19),
+					coordinateService.newCoordinate(5, 18)
 				]
 			} 
 			return newPiece
@@ -49,7 +50,7 @@ let PieceService = {
 				//ew. Ew ew ew
 				let rightMostCoords = [sorted[0], sorted[1]];
 				let rightNeighbors = rightMostCoords.map(function(cc){
-						return new Coordinate(cc.X+1, cc.Y);
+						return coordinateService.newCoordinate(cc.X+1, cc.Y);
 				});
 				return rightNeighbors.some(function(cc){
 					return cc.X === coord.X && cc.Y == coord.Y;
@@ -61,7 +62,7 @@ let PieceService = {
 				});
 				let leftMostCoords = [sorted[0], sorted[1]];
 				let leftNeighbors = leftMostCoords.map(function(cc){
-					return new Coordinate(cc.X-1,cc.Y);
+					return coordinateService.newCoordinate(cc.X-1,cc.Y);
 				});
 				return leftNeighbors.some(function(cc){
 					return cc.X === coord.X && cc.Y === coord.Y;

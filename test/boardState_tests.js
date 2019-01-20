@@ -3,8 +3,8 @@ let d = require('../app/model/dimension');
 let GameFactory = require('../app/model/gameFactory');
 let pTypes = require('../app/model/pieceType');
 let Moves = require('../app/model/moves');
-let Coordinate = require('../app/model/coordinate.js');
 
+let coordinateService = require('../app/service/coordinateService.js');
 let pieceService = require('../app/service/pieceService.js');
 
 const arbitraryCoordSort = (a,b) => { 
@@ -80,16 +80,16 @@ describe('The Board', function(){
 
 				//Need an elegant way to assert that our coords aren't out of bounds
 				this.board.activePieceCoords().should.eql([
-					new Coordinate(d.WIDTH-2,d.HEIGHT-1),
-					new Coordinate(d.WIDTH-2,d.HEIGHT-2),
-					new Coordinate(d.WIDTH-1,d.HEIGHT-1),
-					new Coordinate(d.WIDTH-1,d.HEIGHT-2)
+					coordinateService.newCoordinate(d.WIDTH-2,d.HEIGHT-1),
+					coordinateService.newCoordinate(d.WIDTH-2,d.HEIGHT-2),
+					coordinateService.newCoordinate(d.WIDTH-1,d.HEIGHT-1),
+					coordinateService.newCoordinate(d.WIDTH-1,d.HEIGHT-2)
 				].sort(arbitraryCoordSort)) 
             });
             it('should keep piece in the same place if coords to the right top are covered', function(){
 				// 0 1 2 3 4 5 6 7 8 9
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
-				this.board.addCoveredCoords([new Coordinate(6, d.HEIGHT-1)]);
+				this.board.addCoveredCoords([coordinateService.newCoordinate(6, d.HEIGHT-1)]);
 
 				this.board.processForActivePiece(Moves.Right);
 
@@ -97,7 +97,7 @@ describe('The Board', function(){
             });
             it('should keep piece in the same place if coords to the right bottom are covered', function(){
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
-				this.board.addCoveredCoords([new Coordinate(6, d.HEIGHT-2)]);
+				this.board.addCoveredCoords([coordinateService.newCoordinate(6, d.HEIGHT-2)]);
 
 				this.board.processForActivePiece(Moves.Right);
 
@@ -115,7 +115,7 @@ describe('The Board', function(){
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
 				this.board.processForActivePiece(Moves.Right);
 				this.board.coveredCoords.sort(arbitraryCoordSort).should.be.eql(startingPiece.coveredCoords.map(function(cc){
-					return new Coordinate(cc.X+1, cc.Y);
+					return coordinateService.newCoordinate(cc.X+1, cc.Y);
 				}).sort(arbitraryCoordSort));
 			});
         });
@@ -135,16 +135,16 @@ describe('The Board', function(){
 
 				//Need an elegant way to assert that our coords aren't out of bounds
 				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql([
-					new Coordinate(0,d.HEIGHT-1),
-					new Coordinate(0,d.HEIGHT-2),
-					new Coordinate(1,d.HEIGHT-1),
-					new Coordinate(1,d.HEIGHT-2)
+					coordinateService.newCoordinate(0,d.HEIGHT-1),
+					coordinateService.newCoordinate(0,d.HEIGHT-2),
+					coordinateService.newCoordinate(1,d.HEIGHT-1),
+					coordinateService.newCoordinate(1,d.HEIGHT-2)
 				].sort(arbitraryCoordSort)) 
             });
             it('should keep piece in the same place if coords to the left top are covered', function(){
 				// 0 1 2 3 4 5 6 7 8 9
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
-				this.board.addCoveredCoords([new Coordinate(3, d.HEIGHT-1)]);
+				this.board.addCoveredCoords([coordinateService.newCoordinate(3, d.HEIGHT-1)]);
 
 				this.board.processForActivePiece(Moves.Left);
 
@@ -152,7 +152,7 @@ describe('The Board', function(){
             });
             it('should keep piece in the same place if coords to the left bottom are covered', function(){
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
-				this.board.addCoveredCoords([new Coordinate(3, d.HEIGHT-2)]);
+				this.board.addCoveredCoords([coordinateService.newCoordinate(3, d.HEIGHT-2)]);
 
 				this.board.processForActivePiece(Moves.Left);
 
@@ -170,7 +170,7 @@ describe('The Board', function(){
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
 				this.board.processForActivePiece(Moves.Left);
 				this.board.coveredCoords.sort(arbitraryCoordSort).should.be.eql(startingPiece.coveredCoords.map(function(cc){
-					return new Coordinate(cc.X-1, cc.Y);
+					return coordinateService.newCoordinate(cc.X-1, cc.Y);
 				}).sort(arbitraryCoordSort));
 			});
 		});

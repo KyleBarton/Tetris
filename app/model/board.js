@@ -1,6 +1,6 @@
 let d = require('./dimension');
-let Coordinate = require('./coordinate');
 let Moves = require('./moves');
+let coordService = require('../service/coordinateService.js');
 let pieceService = require('../service/pieceService.js');
 
 class Board {
@@ -16,7 +16,8 @@ class Board {
         let coords = [];
         for (let row = 0; row < rows; row++){
             for (let col = 0; col < columns; col++){
-                coords.push(new Coordinate(col, row));
+                //coords.push(new Coordinate(col, row));
+				coords.push(coordService.newCoordinate(col,row));
             }
         }
         return coords;
@@ -26,7 +27,12 @@ class Board {
     introducePiece(piece){
         this.activePiece = piece;
         for(let i = 0; i < this.activePiece.coveredCoords.length; i++){
-            this.coveredCoords.push(new Coordinate(this.activePiece.coveredCoords[i].X, this.activePiece.coveredCoords[i].Y));
+            //this.coveredCoords.push(new Coordinate(this.activePiece.coveredCoords[i].X, this.activePiece.coveredCoords[i].Y));
+			this.coveredCoords.push(
+				coordService.newCoordinate(
+					this.activePiece.coveredCoords[i].X,
+					this.activePiece.coveredCoords[i].Y)
+			);
         }
     }
 
