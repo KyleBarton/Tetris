@@ -1,10 +1,11 @@
 let should = require('should');
 let d = require('../app/model/dimension');
 let GameFactory = require('../app/model/gameFactory');
-let Piece = require('../app/model/piece');
 let pTypes = require('../app/model/pieceType');
 let Moves = require('../app/model/moves');
-let Coordinate = require('../app/model/coordinate.js')
+let Coordinate = require('../app/model/coordinate.js');
+
+let pieceService = require('../app/service/pieceService.js');
 
 const arbitraryCoordSort = (a,b) => { 
 	//factor of 2 breaks the tie and prefers x comparison over y
@@ -47,7 +48,7 @@ describe('The Board', function(){
     describe('when fed a piece that fits', function(){
         beforeEach(function(){
             this.board = GameFactory.createNewGame().board;
-            this.newPiece = new Piece(pTypes.Cube).newPosition();
+			this.newPiece = pieceService.newPiece(pTypes.Cube);
             this.board.introducePiece(this.newPiece);
         });
         it('should have the new piece listed as active', function(){
@@ -60,13 +61,13 @@ describe('The Board', function(){
     describe('when processing piece move', function(){
         beforeEach(function(){
             this.board = GameFactory.createNewGame().board;
-            this.newPiece = new Piece(pTypes.Cube).newPosition();
+			this.newPiece = pieceService.newPiece(pTypes.Cube);
             this.board.introducePiece(this.newPiece);
         });
         describe('right', function(){
             it('should move all coords right if legal', function(){
                 this.board.processForActivePiece(Moves.Right);
-                let originalPiece = new Piece(pTypes.Cube).newPosition();
+				let originalPiece = pieceService.newPiece(pTypes.Cube);
                 this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(originalPiece.coveredCoords.map(function(cc){
                     cc.X++;
                     return cc
@@ -87,7 +88,7 @@ describe('The Board', function(){
             });
             it('should keep piece in the same place if coords to the right top are covered', function(){
 				// 0 1 2 3 4 5 6 7 8 9
-				let startingPiece = new Piece(pTypes.Cube).newPosition();
+				let startingPiece = pieceService.newPiece(pTypes.Cube);
 				this.board.addCoveredCoords([new Coordinate(6, d.HEIGHT-1)]);
 
 				this.board.processForActivePiece(Moves.Right);
@@ -95,7 +96,7 @@ describe('The Board', function(){
 				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
             });
             it('should keep piece in the same place if coords to the right bottom are covered', function(){
-				let startingPiece = new Piece(pTypes.Cube).newPosition();
+				let startingPiece = pieceService.newPiece(pTypes.Cube);
 				this.board.addCoveredCoords([new Coordinate(6, d.HEIGHT-2)]);
 
 				this.board.processForActivePiece(Moves.Right);
@@ -111,7 +112,7 @@ describe('The Board', function(){
 				})
 			});
 			it('should include the coords where the piece moved to in coveredcoords', function(){
-				let startingPiece = new Piece(pTypes.Cube).newPosition();
+				let startingPiece = pieceService.newPiece(pTypes.Cube);
 				this.board.processForActivePiece(Moves.Right);
 				this.board.coveredCoords.sort(arbitraryCoordSort).should.be.eql(startingPiece.coveredCoords.map(function(cc){
 					return new Coordinate(cc.X+1, cc.Y);
@@ -121,7 +122,7 @@ describe('The Board', function(){
 		describe('left', function(){
             it('should move all coords left if legal', function(){
                 this.board.processForActivePiece(Moves.Left);
-                let originalPiece = new Piece(pTypes.Cube).newPosition();
+				let originalPiece = pieceService.newPiece(pTypes.Cube);
                 this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(originalPiece.coveredCoords.map(function(cc){
                     cc.X--;
                     return cc
@@ -142,7 +143,7 @@ describe('The Board', function(){
             });
             it('should keep piece in the same place if coords to the left top are covered', function(){
 				// 0 1 2 3 4 5 6 7 8 9
-				let startingPiece = new Piece(pTypes.Cube).newPosition();
+				let startingPiece = pieceService.newPiece(pTypes.Cube);
 				this.board.addCoveredCoords([new Coordinate(3, d.HEIGHT-1)]);
 
 				this.board.processForActivePiece(Moves.Left);
@@ -150,7 +151,7 @@ describe('The Board', function(){
 				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
             });
             it('should keep piece in the same place if coords to the left bottom are covered', function(){
-				let startingPiece = new Piece(pTypes.Cube).newPosition();
+				let startingPiece = pieceService.newPiece(pTypes.Cube);
 				this.board.addCoveredCoords([new Coordinate(3, d.HEIGHT-2)]);
 
 				this.board.processForActivePiece(Moves.Left);
@@ -166,7 +167,7 @@ describe('The Board', function(){
 				})
 			});
 			it('should include the coords where the piece moved to in coveredcoords', function(){
-				let startingPiece = new Piece(pTypes.Cube).newPosition();
+				let startingPiece = pieceService.newPiece(pTypes.Cube);
 				this.board.processForActivePiece(Moves.Left);
 				this.board.coveredCoords.sort(arbitraryCoordSort).should.be.eql(startingPiece.coveredCoords.map(function(cc){
 					return new Coordinate(cc.X-1, cc.Y);

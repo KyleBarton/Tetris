@@ -1,6 +1,6 @@
-let pTypes = require('./pieceType');
-let Coordinate = require('./coordinate');
-let Moves = require('./moves');
+let pTypes = require('../model/pieceType');
+let Coordinate = require('../model/coordinate');
+let Moves = require('../model/moves');
 
 let PieceService = {
 	newPiece: function(pType){
@@ -29,6 +29,7 @@ let PieceService = {
 					return cc;
 				})
 			}
+		}
 		if (move === Moves.Left){
 			return {
 				pType: piece.pType,

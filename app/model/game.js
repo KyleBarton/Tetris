@@ -1,7 +1,7 @@
 let Board = require('./board');
 let Level = require('./level');
-let Piece = require('./piece');
 let pTypes = require('./pieceType');
+let pieceService = require('../service/pieceService.js');
 
 class Game {
     constructor(){
@@ -10,7 +10,7 @@ class Game {
         this.board = new Board().startNew();
         this.level = new Level();
         //TODO hardcoded for now
-        this.newPIece = new Piece(pTypes.Cube);
+		this.newPiece = pieceService.newPiece(pTypes.Cube);
         return this;
     }
 }

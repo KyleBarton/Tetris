@@ -1,6 +1,7 @@
 let d = require('./dimension');
 let Coordinate = require('./coordinate');
 let Moves = require('./moves');
+let pieceService = require('../service/pieceService.js');
 
 class Board {
     constructor(){}
@@ -43,7 +44,7 @@ class Board {
 					return pcc.X === cc.X && pcc.Y == cc.Y;
 				});
 			});
-            this.activePiece.move(move)
+			this.activePiece = pieceService.processMove(move, this.activePiece);
 			this.introducePiece(this.activePiece);
         }
 		if (move === Moves.Left
@@ -59,8 +60,7 @@ class Board {
 					return pcc.X === cc.X && pcc.Y == cc.Y;
 				});
 			});
-			//
-			this.activePiece.move(move);
+			this.activePiece = pieceService.processMove(move, this.activePiece);
 			this.introducePiece(this.activePiece);
 		}
     }
@@ -70,7 +70,7 @@ class Board {
 	coordsAreClear(move){
 		let piece = this.activePiece;
 		return !this.coveredCoords.some(function(cc){
-			return piece.hasNeighbor(move, cc);
+			return pieceService.hasNeighbor(piece, move, cc);
 		})
 	}
 
