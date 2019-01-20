@@ -92,7 +92,7 @@ describe('The Board', function(){
 
 				this.board.processForActivePiece(Moves.Right);
 
-				this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
+				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
             });
             it('should keep piece in the same place if coords to the right bottom are covered', function(){
 				let startingPiece = new Piece(pTypes.Cube).newPosition();
@@ -100,7 +100,7 @@ describe('The Board', function(){
 
 				this.board.processForActivePiece(Moves.Right);
 
-				this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
+				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
 
             });
 			it('should not include the coords where the piece moved off in coveredcoords', function(){
@@ -122,7 +122,7 @@ describe('The Board', function(){
             it('should move all coords left if legal', function(){
                 this.board.processForActivePiece(Moves.Left);
                 let originalPiece = new Piece(pTypes.Cube).newPosition();
-                this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(originalPiece.coveredCoords.map(function(cc){
+                this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(originalPiece.coveredCoords.map(function(cc){
                     cc.X--;
                     return cc
                 }).sort(arbitraryCoordSort));
@@ -133,7 +133,7 @@ describe('The Board', function(){
 				}
 
 				//Need an elegant way to assert that our coords aren't out of bounds
-				this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql([
+				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql([
 					new Coordinate(0,d.HEIGHT-1),
 					new Coordinate(0,d.HEIGHT-2),
 					new Coordinate(1,d.HEIGHT-1),
@@ -147,7 +147,7 @@ describe('The Board', function(){
 
 				this.board.processForActivePiece(Moves.Left);
 
-				this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
+				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
             });
             it('should keep piece in the same place if coords to the left bottom are covered', function(){
 				let startingPiece = new Piece(pTypes.Cube).newPosition();
@@ -155,7 +155,7 @@ describe('The Board', function(){
 
 				this.board.processForActivePiece(Moves.Left);
 
-				this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
+				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
 
             });
 			it('should not include the coords where the piece moved off in coveredcoords', function(){
