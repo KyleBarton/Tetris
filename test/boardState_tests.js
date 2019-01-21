@@ -6,6 +6,7 @@ let Moves = require('../app/model/moves');
 
 let coordinateService = require('../app/service/coordinateService.js');
 let pieceService = require('../app/service/pieceService.js');
+let boardService = require('../app/service/boardService.js');
 
 const arbitraryCoordSort = (a,b) => { 
 	//factor of 2 breaks the tie and prefers x comparison over y
@@ -49,7 +50,8 @@ describe('The Board', function(){
         beforeEach(function(){
             this.board = GameFactory.createNewGame().board;
 			this.newPiece = pieceService.newPiece(pTypes.Cube);
-            this.board.introducePiece(this.newPiece);
+			this.board = boardService.introducePiece(this.board, this.newPiece);
+            //this.board.introducePiece(this.newPiece);
         });
         it('should have the new piece listed as active', function(){
             this.board.activePiece.should.eql(this.newPiece);
@@ -59,53 +61,57 @@ describe('The Board', function(){
         });
     });
     describe('when processing piece move', function(){
-        beforeEach(function(){
-            this.board = GameFactory.createNewGame().board;
-			this.newPiece = pieceService.newPiece(pTypes.Cube);
-            this.board.introducePiece(this.newPiece);
-        });
         describe('right', function(){
-            it('should move all coords right if legal', function(){
-                this.board.processForActivePiece(Moves.Right);
-				let originalPiece = pieceService.newPiece(pTypes.Cube);
-                this.board.activePiece.coveredCoords.sort(arbitraryCoordSort).should.eql(originalPiece.coveredCoords.map(function(cc){
-                    cc.X++;
-                    return cc
-                }).sort(arbitraryCoordSort));
-            });
+			beforeEach(function(){
+				this.board = GameFactory.createNewGame().board;
+				this.newPiece = pieceService.newPiece(pTypes.Cube);
+				this.board = boardService.introducePiece(this.board, this.newPiece);
+			});
             it('should keep piece in the same place if on right wall', function(){
 				for (let i = 0; i < 5; i++){
-					this.board.processForActivePiece(Moves.Right);
+					this.board = boardService.processForActivePiece(this.board, Moves.Right);
 				}
 
 				//Need an elegant way to assert that our coords aren't out of bounds
-				this.board.activePieceCoords().should.eql([
+				boardService.activePieceCoords(this.board).should.eql([
 					coordinateService.newCoordinate(d.WIDTH-2,d.HEIGHT-1),
 					coordinateService.newCoordinate(d.WIDTH-2,d.HEIGHT-2),
 					coordinateService.newCoordinate(d.WIDTH-1,d.HEIGHT-1),
 					coordinateService.newCoordinate(d.WIDTH-1,d.HEIGHT-2)
 				].sort(arbitraryCoordSort)) 
             });
+            it('should move all coords right if legal', function(){
+                this.board = boardService.processForActivePiece(this.board, Moves.Right);
+				let originalPiece = pieceService.newPiece(pTypes.Cube);
+                boardService.activePieceCoords(this.board).sort(arbitraryCoordSort).should.eql(originalPiece.coveredCoords.map(function(cc){
+                    cc.X++;
+                    return cc
+                }).sort(arbitraryCoordSort));
+            });
             it('should keep piece in the same place if coords to the right top are covered', function(){
 				// 0 1 2 3 4 5 6 7 8 9
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
-				this.board.addCoveredCoords([coordinateService.newCoordinate(6, d.HEIGHT-1)]);
+				this.board = boardService.addCoveredCoords(this.board, [coordinateService.newCoordinate(6, d.HEIGHT-1)]);
 
-				this.board.processForActivePiece(Moves.Right);
+				this.board = boardService.processForActivePiece(this.board, Moves.Right);
 
-				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
+				boardService.activePieceCoords(this.board)
+					.sort(arbitraryCoordSort)
+					.should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
             });
             it('should keep piece in the same place if coords to the right bottom are covered', function(){
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
-				this.board.addCoveredCoords([coordinateService.newCoordinate(6, d.HEIGHT-2)]);
+				boardService.addCoveredCoords(this.board, [coordinateService.newCoordinate(6, d.HEIGHT-2)])
 
-				this.board.processForActivePiece(Moves.Right);
+				this.board = boardService.processForActivePiece(this.board, Moves.Right);
 
-				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
+				boardService.activePieceCoords(this.board)
+					.sort(arbitraryCoordSort)
+					.should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
 
             });
 			it('should not include the coords where the piece moved off in coveredcoords', function(){
-				this.board.processForActivePiece(Moves.Right);
+				this.board = boardService.processForActivePiece(this.board, Moves.Right);
 
 				this.board.coveredCoords.should.not.matchAny(function(cc){
 					cc.X.should.be.eql(4);
@@ -113,28 +119,34 @@ describe('The Board', function(){
 			});
 			it('should include the coords where the piece moved to in coveredcoords', function(){
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
-				this.board.processForActivePiece(Moves.Right);
+				this.board = boardService.processForActivePiece(this.board, Moves.Right);
+
 				this.board.coveredCoords.sort(arbitraryCoordSort).should.be.eql(startingPiece.coveredCoords.map(function(cc){
 					return coordinateService.newCoordinate(cc.X+1, cc.Y);
 				}).sort(arbitraryCoordSort));
 			});
         });
 		describe('left', function(){
+			beforeEach(function(){
+				this.board = GameFactory.createNewGame().board;
+				this.newPiece = pieceService.newPiece(pTypes.Cube);
+				this.board = boardService.introducePiece(this.board, this.newPiece);
+			});
             it('should move all coords left if legal', function(){
-                this.board.processForActivePiece(Moves.Left);
+				this.board = boardService.processForActivePiece(this.board, Moves.Left);
 				let originalPiece = pieceService.newPiece(pTypes.Cube);
-                this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(originalPiece.coveredCoords.map(function(cc){
+                boardService.activePieceCoords(this.board).sort(arbitraryCoordSort).should.eql(originalPiece.coveredCoords.map(function(cc){
                     cc.X--;
                     return cc
                 }).sort(arbitraryCoordSort));
             });
             it('should keep piece in the same place if on left wall', function(){
 				for (let i = 0; i < 5; i++){
-					this.board.processForActivePiece(Moves.Left);
+					this.board = boardService.processForActivePiece(this.board, Moves.Left);
 				}
 
 				//Need an elegant way to assert that our coords aren't out of bounds
-				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql([
+				boardService.activePieceCoords(this.board).sort(arbitraryCoordSort).should.eql([
 					coordinateService.newCoordinate(0,d.HEIGHT-1),
 					coordinateService.newCoordinate(0,d.HEIGHT-2),
 					coordinateService.newCoordinate(1,d.HEIGHT-1),
@@ -144,23 +156,27 @@ describe('The Board', function(){
             it('should keep piece in the same place if coords to the left top are covered', function(){
 				// 0 1 2 3 4 5 6 7 8 9
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
-				this.board.addCoveredCoords([coordinateService.newCoordinate(3, d.HEIGHT-1)]);
+				this.board = boardService.addCoveredCoords(this.board, [coordinateService.newCoordinate(3, d.HEIGHT-1)]);
 
-				this.board.processForActivePiece(Moves.Left);
+				this.board = boardService.processForActivePiece(this.board, Moves.Left);
 
-				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
+				boardService.activePieceCoords(this.board)
+					.sort(arbitraryCoordSort)
+					.should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
             });
             it('should keep piece in the same place if coords to the left bottom are covered', function(){
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
-				this.board.addCoveredCoords([coordinateService.newCoordinate(3, d.HEIGHT-2)]);
+				this.board = boardService.addCoveredCoords(this.board, [coordinateService.newCoordinate(3, d.HEIGHT-2)]);
 
-				this.board.processForActivePiece(Moves.Left);
+				this.board = boardService.processForActivePiece(this.board, Moves.Left);
 
-				this.board.activePieceCoords().sort(arbitraryCoordSort).should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
+				boardService.activePieceCoords(this.board)
+					.sort(arbitraryCoordSort)
+					.should.eql(startingPiece.coveredCoords.sort(arbitraryCoordSort));
 
             });
 			it('should not include the coords where the piece moved off in coveredcoords', function(){
-				this.board.processForActivePiece(Moves.Left);
+				this.board = boardService.processForActivePiece(this.board, Moves.Left);
 
 				this.board.coveredCoords.should.not.matchAny(function(cc){
 					cc.X.should.be.eql(5);
@@ -168,7 +184,7 @@ describe('The Board', function(){
 			});
 			it('should include the coords where the piece moved to in coveredcoords', function(){
 				let startingPiece = pieceService.newPiece(pTypes.Cube);
-				this.board.processForActivePiece(Moves.Left);
+				this.board = boardService.processForActivePiece(this.board, Moves.Left);
 				this.board.coveredCoords.sort(arbitraryCoordSort).should.be.eql(startingPiece.coveredCoords.map(function(cc){
 					return coordinateService.newCoordinate(cc.X-1, cc.Y);
 				}).sort(arbitraryCoordSort));
