@@ -1,5 +1,6 @@
 let Moves = {
     Right: 'Right',
-    Left: 'Left'
+    Left: 'Left',
+	Down: 'Down'
 }
 module.exports=Moves;

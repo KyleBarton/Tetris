@@ -40,6 +40,15 @@ let PieceService = {
 				})
 			}
 		}
+		if (move === Moves.Down){
+			return {
+				pType: piece.pType,
+				coveredCoords: piece.coveredCoords.map(function(cc){
+					cc.Y--;
+					return cc;
+				})
+			}
+		}
 	},
 	hasNeighbor: function(piece, move, coord){
 		if (piece.pType === pTypes.Cube){
@@ -66,6 +75,18 @@ let PieceService = {
 				});
 				return leftNeighbors.some(function(cc){
 					return cc.X === coord.X && cc.Y === coord.Y;
+				});
+			}
+			if (move === Moves.Down){
+				let sorted = piece.coveredCoords.sort(function(a,b){
+					return a.Y - b.Y;
+				});
+				let bottomMostCoords = [sorted[0], sorted[1]];
+				let bottomNeighbors = bottomMostCoords.map(function(cc){
+					return coordinateService.newCoordinate(cc.X,cc.Y-1);
+				});
+				return bottomNeighbors.some(function(cc){
+					return cc.X === coord.X & cc.Y === coord.Y;
 				});
 			}
 		}
