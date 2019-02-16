@@ -1,4 +1,5 @@
 let pTypes = require('../model/pieceType');
+let eventQueue = require('../model/eventQueue.js');
 
 let levelService = require('../service/levelService.js');
 let pieceService = require('../service/pieceService.js');
@@ -10,7 +11,7 @@ let gameService = {
 			board: boardService.newBoard(),
 			level: levelService.startingLevel(),
 			newPiece: pieceService.newPiece(pTypes.Cube),
-			moveQueue: []
+			eventQueue: eventQueue.create()
 		}
 	}
 }
