@@ -1,6 +1,6 @@
 let should = require('should');
 let d = require('../app/model/dimension');
-let GameFactory = require('../app/model/gameFactory');
+let gameService = require('../app/service/gameService.js');
 let pTypes = require('../app/model/pieceType');
 let Moves = require('../app/model/moves');
 
@@ -17,7 +17,7 @@ const arbitraryCoordSort = (a,b) => {
 describe('The Board', function(){
     describe('at starting position', function(){
         beforeEach(function(){
-            this.board = GameFactory.createNewGame().board;
+            this.board = gameService.createNewGame().board;
         })
         it('should have no covered coordinates', function(){
             this.board.coveredCoords.should.be.empty();
@@ -28,7 +28,7 @@ describe('The Board', function(){
     });
     describe('always', function(){
         beforeEach(function(){
-            this.board = GameFactory.createNewGame().board;
+            this.board = gameService.createNewGame().board;
         });
         it(`should have ${d.WIDTH} columns`, function(){
             for (let i = 0; i < this.board.rows; i++){
@@ -51,7 +51,7 @@ describe('The Board', function(){
     });
     describe('when fed a piece that fits', function(){
         beforeEach(function(){
-            this.board = GameFactory.createNewGame().board;
+            this.board = gameService.createNewGame().board;
 			this.newPiece = pieceService.newPiece(pTypes.Cube);
 			this.board = boardService.introducePiece(this.board, this.newPiece);
         });
@@ -68,7 +68,7 @@ describe('The Board', function(){
     describe('when processing piece move', function(){
         describe('right', function(){
 			beforeEach(function(){
-				this.board = GameFactory.createNewGame().board;
+				this.board = gameService.createNewGame().board;
 				this.newPiece = pieceService.newPiece(pTypes.Cube);
 				this.board = boardService.introducePiece(this.board, this.newPiece);
 			});
@@ -133,7 +133,7 @@ describe('The Board', function(){
         });
 		describe('left', function(){
 			beforeEach(function(){
-				this.board = GameFactory.createNewGame().board;
+				this.board = gameService.createNewGame().board;
 				this.newPiece = pieceService.newPiece(pTypes.Cube);
 				this.board = boardService.introducePiece(this.board, this.newPiece);
 			});
@@ -197,7 +197,7 @@ describe('The Board', function(){
 		});
 		describe("down", function(){
 			beforeEach(function(){
-				this.board = GameFactory.createNewGame().board;
+				this.board = gameService.createNewGame().board;
 				this.newPiece = pieceService.newPiece(pTypes.Cube);
 				this.board = boardService.introducePiece(this.board, this.newPiece);
 			});
