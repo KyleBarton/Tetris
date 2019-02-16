@@ -13,6 +13,10 @@ let gameService = {
 			newPiece: pieceService.newPiece(pTypes.Cube),
 			eventQueue: eventQueue.create()
 		}
+	},
+	addProgress: function(game, numIncrease){
+		game.level = levelService.increment(game.level, numIncrease);
+		return game;
 	}
 }
 module.exports=gameService;

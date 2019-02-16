@@ -28,6 +28,38 @@ describe('The Game', function(){
 			moveQueue.length().should.be.eql(4);
 			let move = moveQueue.pull();
 			moveQueue.length().should.be.eql(3);
+		});
+	});
+	describe('When incrementing progress', function(){
+		it('should raise level by progress directed', function(){
+			let game = gameService.createNewGame();
+			game = gameService.addProgress(game, 5);
+			game.level.progress.should.be.eql(5);
 		})
-	})
-})
+		it('should raise level if progress moves past 9', function(){
+			let game = gameService.createNewGame();
+			game = gameService.addProgress(game, 10);
+			game.level.stage.should.be.eql(1);
+		});
+		it('should carry progress over to next level if processing multiple progress', function(){
+			let game = gameService.createNewGame();
+			game = gameService.addProgress(game, 13);
+			game.level.stage.should.be.eql(1);
+			game.level.progress.should.be.eql(3);
+		});
+	});
+	describe('When processing an event', function(){ 
+		it('should pass a right move on to the board', function(){
+
+		});
+		it('should pass a left move on to the board', function(){
+
+		});
+		it('should pass a down move on to the board', function(){
+
+		});
+		it('should increment progress when board indicates rows cleared', function(){
+
+		});
+	});
+});
