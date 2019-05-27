@@ -1,4 +1,5 @@
 let gameService = require('../app/service/gameService.js');
+let boardService = require('../app/service/boardService.js');
 let should = require('should');
 let moves = require('../app/model/moves.js');
 
@@ -49,8 +50,20 @@ describe('The Game', function(){
 		});
 	});
 	describe('When processing an event', function(){ 
-		it('should pass a right move on to the board', function(){
+		xit('should pass a right move on to the board', function(){
+			let game = gameService.createNewGame();
+			let expectedBoard = boardService.processForActivePiece(game.board, moves.Right);
 
+			game = gameService.processEvent(game,{
+				move: moves.Right
+			});
+
+			let actualBoard = game.board;
+
+			//We have a problem; we can't introduce a "right" move on a virgin board
+			//because there is no active piece to make a "right" move against. So the board needs some
+			//way to indicate that it is ready to accept new pieces
+			actualBoard.should.be.eql(expectedBoard);
 		});
 		it('should pass a left move on to the board', function(){
 
