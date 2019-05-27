@@ -1,7 +1,10 @@
 let gameService = require('../app/service/gameService.js');
 let boardService = require('../app/service/boardService.js');
+let pieceService = require('../app/service/pieceService.js');
+
 let should = require('should');
 let moves = require('../app/model/moves.js');
+let pTypes = require('../app/model/pieceType.js');
 
 describe('The Game', function(){
 	describe('Move queue', function(){
@@ -50,29 +53,105 @@ describe('The Game', function(){
 		});
 	});
 	describe('When processing an event', function(){ 
-		xit('should pass a right move on to the board', function(){
-			let game = gameService.createNewGame();
-			let expectedBoard = boardService.processForActivePiece(game.board, moves.Right);
+		describe('with an empty board', function(){
+			it('should result in the same board after a right move', function(){
+				let game = gameService.createNewGame();
+				let expectedBoard = boardService.newBoard();
 
-			game = gameService.processEvent(game,{
-				move: moves.Right
+				//TODO events should be an object
+				game = gameService.processEvent(game,{
+					move: moves.Right
+				});
+
+				let actualBoard = game.board;
+
+				actualBoard.should.be.eql(expectedBoard);
 			});
+			it('should result in the same board after a left move', function(){
+				let game = gameService.createNewGame();
+				let expectedBoard = boardService.newBoard();
 
-			let actualBoard = game.board;
+				game = gameService.processEvent(game, {
+					move: moves.Left
+				});
 
-			//We have a problem; we can't introduce a "right" move on a virgin board
-			//because there is no active piece to make a "right" move against. So the board needs some
-			//way to indicate that it is ready to accept new pieces
-			actualBoard.should.be.eql(expectedBoard);
+				let actualBoard = game.board;
+
+				actualBoard.should.be.eql(expectedBoard);
+			});
+			it('should result in the same board after a down move', function(){
+				let game = gameService.createNewGame();
+				let expectedBoard = boardService.newBoard();
+
+				game = gameService.processEvent(game, {
+					move: moves.Down
+				});
+
+				let actualBoard = game.board;
+
+				actualBoard.should.be.eql(expectedBoard);
+
+			});
 		});
-		it('should pass a left move on to the board', function(){
+		describe('when processing an event to introduce piece', function(){
+			it('should introduce the piece on the board', function(){
+				let game = gameService.createNewGame();
+				
+				let newPiece = pieceService.newPiece(pTypes.Cube);
 
-		});
-		it('should pass a down move on to the board', function(){
+				let expectedBoard = boardService.newBoard(); 
 
-		});
+				expectedBoard = boardService.introducePiece(expectedBoard, newPiece);;
+
+				game = gameService.processEvent(game, {
+					newPiece: newPiece
+				});
+
+				let actualBoard = game.board;
+
+				actualBoard.should.be.eql(expectedBoard);
+			});
+			it('should ignore the event if the board already has an active piece', function(){
+				let game = gameService.createNewGame();
+				//Game already has a piece in place
+				game = gameService.processEvent(game, {
+					newPiece: pieceService.newPiece(pTypes.Cube)
+				});
+				//move the active piece to make sure we're not just overwriting it
+				game = gameService.processEvent(game, {
+					move: moves.Right
+				});
+
+				let expectedCoveredCoords = boardService.activePieceCoords(game.board);
+
+				game = gameService.processEvent(game, {
+					newPiece: pieceService.newPiece(pTypes.Cube)
+				});
+
+				let actualCoveredCoords = boardService.activePieceCoords(game.board);
+
+				actualCoveredCoords.should.be.eql(expectedCoveredCoords);
+			})
+		})
+		describe('with a newly active piece', function(){
+			it('should process a right move on its board', function(){
+				let game = gameService.createNewGame();
+				let newPiece = pieceService.newPiece(pTypes.Cube);
+
+				let expectedBoard = boardService.newBoard();
+
+				expectedBoard = boardService.introducePiece(expectedBoard, newPiece);
+				expectedBoard = boardService.processForActivePiece(expectedBoard, moves.Right);
+
+				game = gameService.processEvent(game, {newPiece: newPiece});
+				game = gameService.processEvent(game, {move: moves.Right});
+
+				let actualBoard = game.board;
+
+				actualBoard.should.be.eql(expectedBoard);
+			})
+		})
 		it('should increment progress when board indicates rows cleared', function(){
-
 		});
 	});
 });

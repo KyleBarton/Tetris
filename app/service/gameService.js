@@ -17,6 +17,20 @@ let gameService = {
 	addProgress: function(game, numIncrease){
 		game.level = levelService.increment(game.level, numIncrease);
 		return game;
+	},
+
+	processEvent(game, evnt){
+		//TODO process what kind of event it is here
+		//This needs a whole class of validation that I'm going to do later
+		if (evnt.move != null){
+			game.board = boardService.processForActivePiece(game.board, evnt.move);
+			return game;
+		}
+		if (evnt.newPiece != null){
+			game.board = boardService.introducePiece(game.board, evnt.newPiece);
+			return game;
+		}
+		return null;
 	}
 }
 module.exports=gameService;

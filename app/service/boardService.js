@@ -14,7 +14,10 @@ let boardService = {
 		return coords;
 	},
 	activePieceCoords: function(board){
-		return board.activePiece.coveredCoords;
+		if (board.activePiece != null){
+			return board.activePiece.coveredCoords;
+		}
+		return [];
 	},
 	coordsAreClear: function(board, move){
 		let piece = board.activePiece;
@@ -53,6 +56,9 @@ let boardService = {
 		}
 	},
 	introducePiece: function(board,piece){
+		if (!board.readyForNewPiece){
+			return board;
+		}
 		board.readyForNewPiece = false;
         board.activePiece = piece;
         for(let i = 0; i < this.activePieceCoords(board).length; i++){
@@ -66,6 +72,9 @@ let boardService = {
     },
 
 	processForActivePiece: function(board,move){
+		if (board.activePiece == null){
+			return board;
+		}
         if (move === Moves.Right 
 			&& 
 			!this.activePieceOnEdge(board,move)
@@ -109,6 +118,7 @@ let boardService = {
 				return pcc.X === cc.X && pcc.Y === cc.Y;
 			});
 		});
+		board.readyForNewPiece = true;
 		return board;
 	},
 

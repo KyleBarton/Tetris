@@ -26,8 +26,8 @@ let PieceService = {
 			return {
 				pType: piece.pType,
 				coveredCoords: piece.coveredCoords.map(function(cc){
-					cc.X++;
-					return cc;
+					let coord = coordinateService.newCoordinate(cc.X+1,cc.Y);
+					return coord;
 				})
 			}
 		}
@@ -35,8 +35,8 @@ let PieceService = {
 			return {
 				pType: piece.pType,
 				coveredCoords: piece.coveredCoords.map(function(cc){
-					cc.X--;
-					return cc;
+					let coord = coordinateService.newCoordinate(cc.X-1,cc.Y);
+					return coord;
 				})
 			}
 		}
@@ -44,8 +44,8 @@ let PieceService = {
 			return {
 				pType: piece.pType,
 				coveredCoords: piece.coveredCoords.map(function(cc){
-					cc.Y--;
-					return cc;
+					let coord = coordinateService.newCoordinate(cc.X,cc.Y-1);
+					return coord;
 				})
 			}
 		}
